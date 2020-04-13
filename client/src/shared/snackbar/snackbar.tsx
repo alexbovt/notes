@@ -1,9 +1,20 @@
 import React from 'react'
 
+import {Snackbar} from "@material-ui/core";
+
 interface Props {
-    children: React.ReactNode
+    message: string
 }
 
-export const SnackBar = ({children}: Props): JSX.Element => {
-    return <div>{children}</div>;
+export const SnackBar = ({message}: Props): JSX.Element => {
+    return (
+        <Snackbar
+            anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+            }}
+            open={true}
+            message={message}
+        />
+    )
 };

@@ -2,7 +2,6 @@ import React, {createContext, useCallback, useContext, useEffect, useMemo, useSt
 
 import {SnackBar} from './snackbar';
 
-const AUTO_DISMISS = 1200;
 
 type Toast = {
     message: string
@@ -13,7 +12,7 @@ interface Props {
 }
 
 export const SnackBarContext = createContext({
-    addToast: (newToast: Toast) => {
+    addToast: (newToast: { message: string }) => {
     }
 });
 
@@ -22,6 +21,7 @@ export function useSnackBar() {
 }
 
 //TODO add types
+//TODO check material ui snacknar api and refactor hook
 export function SnackBarProvider({children}: Props) {
     const [toasts, setToasts] = useState<Toast[]>([]);
 
@@ -29,19 +29,25 @@ export function SnackBarProvider({children}: Props) {
 
     useEffect(() => {
         if (activeAlertIds.length > 0) {
-            const timer = setTimeout(() => setToasts(toasts => toasts.slice(0, toasts.length - 1)), AUTO_DISMISS);
+            const timer = setTimeout(() => setToasts(toasts => toasts.slice(0, toasts.length - 1)), 1200);
             return () => clearTimeout(timer);
         }
     }, [activeAlertIds]);
 
-    const addToast = useCallback((newToas: Toast) => setToasts(toasts => [newToas, ...toasts]), []);
+    const addToast = useCallback((newToast: { message: string }) => setToasts(toasts => [{
+        message: newToast.message,
+        isOpen: true
+    }, ...toasts]), []);
 
     const value = useMemo(() => ({addToast}), [addToast]);
 
     return (
         <SnackBarContext.Provider value={value}>
             {children}
-            {toasts.map(toast => <SnackBar key={toast.message}>{toast.message}</SnackBar>)}
+            {toasts.map(toast => <SnackBar
+                key={toast.message}
+                message={toast.message}
+            />)}
         </SnackBarContext.Provider>
     )
 }
