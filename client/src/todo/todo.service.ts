@@ -4,7 +4,7 @@ import {CreateTodoDTO} from '../../../shared/dto/todo/create-todo.dto';
 import {Todo} from "./todo";
 
 export class TodoService {
-    private static readonly baseUrl = 'http://localhost:4200/todo';
+    private static readonly baseUrl = 'http://localhost:4200/todo/';
 
     public static Add(createTodoDTO: CreateTodoDTO): Promise<AxiosResponse<Todo>> {
         return axios.post(this.baseUrl + 'create', createTodoDTO);
