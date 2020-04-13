@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {Hello} from "./components/hello/hello";
-import {Todo} from "./todo/todo";
+import {Todos} from "./todo/todo";
 
 export const App = (): JSX.Element => (
     <div style={{
@@ -13,6 +13,6 @@ export const App = (): JSX.Element => (
     }}>
         <Hello/>
         <hr/>
-        <Todo/>
+        <Todos/>
     </div>
 );
