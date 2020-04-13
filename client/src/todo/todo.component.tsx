@@ -3,14 +3,7 @@ import React, {useEffect, useState} from 'react'
 import {CreateTodoDTO} from '../../../shared/dto/todo/create-todo.dto';
 import {TodoService} from "./todo.service";
 import {useSnackBar} from "../shared/snackbar/snackbar-provider";
-
-export interface Todo {
-    readonly _id: string
-    readonly title: string
-    readonly isDone: boolean
-    readonly author: string
-    readonly date: string
-}
+import {Todo} from "./todo.model";
 
 export const Todos = (): JSX.Element => {
     const [todos, setTodos] = useState<Todo[]>([]);
