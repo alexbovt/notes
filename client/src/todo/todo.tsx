@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from 'react'
 
-import {CreateTodoDTO} from '../../../../shared/dto/todo/create-todo.dto';
+import {CreateTodoDTO} from '../../../shared/dto/todo/create-todo.dto';
+import {TodoService} from "./todo.service";
 
-type Todo = {
+export type Todo = {
     title: string,
     isDone: boolean,
     author: string;
@@ -14,9 +15,9 @@ export const Todo = (): JSX.Element => {
 
     useEffect(() => {
         const getTodos = async () => {
-            const response: Response = await fetch('http://localhost:4200/todo/getAll', {method: 'GET'});
-            const todos = await response.json();
-            setTodos(todos)
+            const {data} = await TodoService.GetAll();
+
+            setTodos(data)
         };
 
         getTodos()
@@ -30,14 +31,9 @@ export const Todo = (): JSX.Element => {
             isDone: false
         };
 
-        const response: Response = await fetch('http://localhost:4200/todo/create', {
-            method: 'POST',
-            body: JSON.stringify(createTodoDTO)
-        });
+        const {data} = await TodoService.Add(createTodoDTO);
 
-        const newTodo = await response.json();
-
-        setTodos(todos => [...todos, newTodo]);
+        setTodos(todos => [...todos, data]);
     };
 
     return (

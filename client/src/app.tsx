@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {Hello} from "./components/hello/hello";
-import {Todo} from "./todo/components/todo";
+import {Todo} from "./todo/todo";
 
 export const App = (): JSX.Element => (
     <div style={{
