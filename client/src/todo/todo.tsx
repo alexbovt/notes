@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react'
 
 import {CreateTodoDTO} from '../../../shared/dto/todo/create-todo.dto';
 import {TodoService} from "./todo.service";
+import {useSnackBar} from "../shared/snackbar/snackbar-provider";
 
 export interface Todo {
     readonly _id: string
@@ -13,6 +14,7 @@ export interface Todo {
 
 export const Todos = (): JSX.Element => {
     const [todos, setTodos] = useState<Todo[]>([]);
+    const {addToast} = useSnackBar();
 
     useEffect(() => {
         const getTodos = async () => {
@@ -40,13 +42,15 @@ export const Todos = (): JSX.Element => {
     const handleDeleteTodo = async (id: string) => {
         const {data} = await TodoService.Delete(id);
 
+        addToast({message: data.message});
+
         setTodos(todos => todos.filter(x => x._id !== data.todo._id))
     };
 
     const handleToggle = async (id: string) => {
         const idx = todos.findIndex(x => x._id === id);
 
-        if (idx != -1) {
+        if (idx !== -1) {
             const todo = todos[idx];
 
             const newTodo: CreateTodoDTO = {
@@ -56,6 +60,8 @@ export const Todos = (): JSX.Element => {
                 isDone: !todo?.isDone
             };
             const {data} = await TodoService.Update(id, newTodo);
+
+            addToast({message: data.message});
 
             setTodos(todos => ([
                 ...todos.slice(0, idx),
