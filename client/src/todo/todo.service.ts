@@ -20,6 +20,10 @@ export class TodoService {
     }
 
     public static Delete(id: string): Promise<AxiosResponse<TodoResponse>> {
-        return axios.delete(`${this.baseUrl}delete/?todoId=${id}`);
+        return axios.delete(`${this.baseUrl}delete?todoId=${id}`);
+    }
+
+    public static Update(id: string, newTodo: CreateTodoDTO): Promise<AxiosResponse<TodoResponse>> {
+        return axios.put(`${this.baseUrl}edit?todoId=${id}`, newTodo);
     }
 }

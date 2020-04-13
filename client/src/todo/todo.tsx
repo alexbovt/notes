@@ -43,6 +43,28 @@ export const Todos = (): JSX.Element => {
         setTodos(todos => todos.filter(x => x._id !== data.todo._id))
     };
 
+    const handleToggle = async (id: string) => {
+        const idx = todos.findIndex(x => x._id === id);
+
+        if (idx != -1) {
+            const todo = todos[idx];
+
+            const newTodo: CreateTodoDTO = {
+                title: todo.title,
+                date: todo.date,
+                author: todo.author,
+                isDone: !todo?.isDone
+            };
+            const {data} = await TodoService.Update(id, newTodo);
+
+            setTodos(todos => ([
+                ...todos.slice(0, idx),
+                data.todo,
+                ...todos.slice(idx + 1)
+            ]));
+        }
+    };
+
     return (
         <>
             <div>
@@ -51,7 +73,9 @@ export const Todos = (): JSX.Element => {
             {Array.isArray(todos) && todos.length > 0 && <ul>
                 {todos.map(todo => (
                     <li key={todo._id}>
-                        <span>{todo.title}</span>
+                        <span style={{textDecoration: todo.isDone ? 'line-through' : 'none'}}
+                              onClick={() => handleToggle(todo._id)}>{todo.title}</span>
+                        {'  '}
                         <button onClick={() => handleDeleteTodo(todo._id)}>Delete</button>
                     </li>
                 ))}

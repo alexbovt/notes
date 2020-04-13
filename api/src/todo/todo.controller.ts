@@ -51,7 +51,7 @@ export class TodoController {
     @Put('/edit')
     public async edit(
         @Res() response,
-        @Query('postId', new ValidateObjectId()) todoId,
+        @Query('todoId', new ValidateObjectId()) todoId,
         @Body()createTodoDTO: CreateTodoDTO
     ): Promise<Response> {
         const todo = await this.todoService.edit(todoId, createTodoDTO);
