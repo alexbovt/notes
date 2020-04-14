@@ -31,7 +31,7 @@ export class TodoService {
     }
 
     public async delete(id: Pick<Todo, 'id'>): Promise<Todo> {
-        const todo = await this.model.findOneAndRemove(id);
+        const todo = await this.model.findByIdAndRemove(id);
         return todo;
     }
 }
