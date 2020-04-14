@@ -3,7 +3,7 @@ import {InjectModel} from '@nestjs/mongoose';
 import {Model} from 'mongoose';
 
 import {Todo} from './interfaces/todo.interface';
-import {CreateTodoDTO} from '../../../shared/dto/todo/create-todo.dto';
+import {CreateTodoDTO} from './dto/create-todo.dto';
 
 @Injectable()
 export class TodoService {

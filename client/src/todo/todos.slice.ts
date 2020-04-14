@@ -1,22 +1,35 @@
-import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {addTodo, deleteTodo, getTodos, updateTodo} from "./todo.actions";
+import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 
-export type TodoState = {}
+import {Todo} from './todo.model';
 
-const initialState: TodoState = {}
+export type TodoState = {
+    todos: Todo[]
+}
 
+const initialState: TodoState = {
+    todos: []
+};
 
-export const todosSlice = createSlice({
+const todosSlice = createSlice({
     name: 'todo',
     initialState,
     reducers: {
-        [getTodos.type]: () => {
+        todosRecived: (state: TodoState, action: PayloadAction<Todo[]>) => {
+            state.todos = action.payload;
         },
-        [addTodo.type]: () => {
+        todoAdded: (state: TodoState, action: PayloadAction<Todo>) => {
+            state.todos.push(action.payload);
         },
-        [deleteTodo.type]: () => {
+        todoUpdated: (state: TodoState, action: PayloadAction<Todo>) => {
+            const idx = state.todos.findIndex(x => x._id === action.payload._id);
+            if (idx !== -1) {
+                state.todos[idx] = action.payload
+            }
         },
-        [updateTodo.type]: () => {
-        },
+        todoDeleted: (state: TodoState, action: PayloadAction<Todo>) => {
+            state.todos = state.todos.filter(x => x._id !== action.payload._id);
+        }
     }
 });
+
+export default todosSlice;

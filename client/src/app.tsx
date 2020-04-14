@@ -1,18 +1,13 @@
 import React from 'react';
-import {configureStore} from '@reduxjs/toolkit';
 
-import {SnackBarProvider} from './shared/snackbar/snackbar-provider';
-import {Hello} from './hello/hello';
+import {Provider} from 'react-redux';
+import {appStore} from './app.store';
+
 import {Todos} from './todo/todo.component';
-import {appReducer} from "./app.reducer";
-
-const store = configureStore({
-    reducer: appReducer
-});
+import {Hello} from './hello/hello';
 
 export const App = (): JSX.Element => (
-
-    <SnackBarProvider>
+    <Provider store={appStore}>
         <div style={{
             display: 'flex',
             height: '100%',
@@ -24,5 +19,5 @@ export const App = (): JSX.Element => (
             <hr/>
             <Todos/>
         </div>
-    </SnackBarProvider>
+    </Provider>
 );

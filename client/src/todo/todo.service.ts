@@ -1,6 +1,6 @@
 import axios, {AxiosResponse} from 'axios'
 
-import {CreateTodoDTO} from '../../../shared/dto/todo/create-todo.dto';
+import {CreateTodoDTO} from '../../../api/src/todo/dto/create-todo.dto';
 import {Todo} from "./todo.model";
 
 type TodoResponse = {

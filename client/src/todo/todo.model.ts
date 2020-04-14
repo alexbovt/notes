@@ -1,10 +1,9 @@
-export class Todo {
-    constructor(
-        public readonly _id: string,
-        public readonly title: string,
-        public readonly isDone: boolean,
-        public readonly author: string,
-        public readonly date: string,
-    ) {
-    }
-}
+export type Todo = {
+    readonly _id: string;
+    readonly title: string;
+    readonly isDone: boolean;
+    readonly author: string;
+    readonly date: string;
+};
+
+export type CreateTodoDTO = Omit<Todo, '_id'>;

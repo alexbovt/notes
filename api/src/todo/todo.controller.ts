@@ -13,7 +13,7 @@ import {
 } from '@nestjs/common';
 
 import {TodoService} from './todo.service';
-import {CreateTodoDTO} from "../../../shared/dto/todo/create-todo.dto";
+import {CreateTodoDTO} from "./dto/create-todo.dto";
 import {ValidateObjectId} from '../shared/pipes/validate-object-id.pipe';
 
 @Controller('todo')
