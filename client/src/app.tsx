@@ -1,11 +1,13 @@
 import React from 'react';
 
-import {SnackBarProvider} from './shared/snackbar/snackbar-provider';
-import {Hello} from './components/hello/hello';
-import {Todos} from './todo/todo';
+import {Provider} from 'react-redux';
+import {appStore} from './app.store';
+
+import {Todos} from './todo/todo.component';
+import {Hello} from './hello/hello';
 
 export const App = (): JSX.Element => (
-    <SnackBarProvider>
+    <Provider store={appStore}>
         <div style={{
             display: 'flex',
             height: '100%',
@@ -17,5 +19,5 @@ export const App = (): JSX.Element => (
             <hr/>
             <Todos/>
         </div>
-    </SnackBarProvider>
+    </Provider>
 );
