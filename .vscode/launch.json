@@ -1,0 +1,26 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Debug API",
+            "preLaunchTask": "tsc: build - api/tsconfig.json",
+            "program": "${workspaceFolder}/api/src/main.ts",
+            "runtimeArgs": [
+                "--nolazy",
+                "-r",
+                "ts-node/register",
+                "-r",
+                "tsconfig-paths/register"
+            ],
+            "sourceMaps": true,
+            "cwd": "${workspaceFolder}/api",
+            "protocol": "inspector",
+            "console": "integratedTerminal",
+            "outFiles": [
+                "${workspaceFolder}/api/dist/**/*.js",
+            ]
+        }
+    ]
+}
