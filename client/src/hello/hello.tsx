@@ -1,21 +1,25 @@
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 
 export const Hello = (): JSX.Element => {
+  const [message, setMessage] = useState<string>('')
 
-    const [message, setMessage] = useState<string>('');
+  useEffect(() => {
+    async function getMessage(): Promise<void> {
+      const response = await fetch('http://localhost:4200/')
+      const msg = await response.text()
 
-    useEffect(() => {
-        async function getMessage(): Promise<void> {
-            const response = await fetch('http://localhost:4200/');
-            const msg = await response.text();
+      setMessage(msg)
+    }
 
-            setMessage(msg);
-        }
+    getMessage()
+  }, [])
 
-        getMessage()
-    }, []);
-
-    return (
-        <span>{message}</span>
-    )
-};
+  return (
+    <>
+      <span>{message}</span>
+      <br />
+      <Link to={'/todos'}>Todos</Link>
+    </>
+  )
+}
