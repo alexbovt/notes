@@ -1,8 +1,7 @@
 import React from 'react'
-
 import { Provider } from 'react-redux'
-import { appStore } from './app.store'
 
+import { appStore } from './app.store'
 import { Main } from './main'
 
 export const App = (): JSX.Element => (
