@@ -3,7 +3,7 @@ import {MongooseModule} from '@nestjs/mongoose';
 
 import {TodoService} from './todo.service';
 import {TodoController} from './todo.controller';
-import {TodoSchema} from './schemas/todo.schema';
+import {TodoSchema} from '../db/schemas/todo.schema';
 
 @Module({
     imports: [

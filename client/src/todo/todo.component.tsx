@@ -1,14 +1,18 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, SyntheticEvent, useState, ChangeEvent } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 
 import { CreateTodoDTO, Todo } from './todo.model'
 import { addTodo, deleteTodo, fetchTodos, updateTodo } from './todo.actions'
-import { useDispatch, useSelector } from 'react-redux'
 import { ApplicationState } from '../app.reducer'
-import { Link } from 'react-router-dom'
 
 export const Todos = (): JSX.Element => {
-  const todos = useSelector((state: ApplicationState) => state.todo.todos)
+  const todos = useSelector<ApplicationState>((state) => state.todo.todos)
   const dispatch = useDispatch()
+
+  const [newTodo, setNewTodo] = useState<string>('')
+
+  const handleNewTodoChage = (event: ChangeEvent<HTMLInputElement>) => setNewTodo(event.target.value)
 
   useEffect(() => {
     dispatch(fetchTodos())
@@ -16,7 +20,7 @@ export const Todos = (): JSX.Element => {
 
   const handleAddTodo = async (): Promise<void> => {
     const createTodoDTO: CreateTodoDTO = {
-      title: 'Add React to Project',
+      title: newTodo,
       author: 'Alex',
       date: new Date().toLocaleString(),
       isDone: false,
@@ -43,11 +47,12 @@ export const Todos = (): JSX.Element => {
         <Link to={'/'}>Hello</Link>
       </div>
       <div>
+        <input type="text" value={newTodo} onChange={handleNewTodoChage} />
         <button onClick={handleAddTodo}>Add Todo</button>
       </div>
       {Array.isArray(todos) && todos.length > 0 && (
         <ul>
-          {todos.map(todo => (
+          {todos.map((todo) => (
             <li key={todo._id}>
               <span
                 style={{
@@ -55,7 +60,7 @@ export const Todos = (): JSX.Element => {
                 }}
                 onClick={() => handleToggle(todo)}
               >
-                {todo._id + ' ' + todo.title}
+                {todo.title}
               </span>
               {'  '}
               <button onClick={() => handleDeleteTodo(todo)}>Delete</button>
