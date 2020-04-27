@@ -1,3 +1,4 @@
+import { DB_FEATURES_NAMES } from './../db/db.constants';
 import { Injectable } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
@@ -10,7 +11,7 @@ const SALT_ROUNDS = 10
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectModel('Todo') private readonly model: Model<User>) {}
+  constructor(@InjectModel(DB_FEATURES_NAMES.Users) private readonly model: Model<User>) {}
 
   public async add(createUserDTO: CreateUserDTO): Promise<User> {
     const hash = await bcrypt.hash(createUserDTO.password, SALT_ROUNDS)
@@ -34,7 +35,7 @@ export class UsersService {
   public async validatePassword(user: User, password: string): Promise<boolean> {
     if (!user) return false
 
-    const isValid = await bcrypt.compare(user.password, password)
+    const isValid = await bcrypt.compare(password, user.password)
 
     return isValid
   }

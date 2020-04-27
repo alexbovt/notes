@@ -1,3 +1,4 @@
+import { DB_FEATURES_NAMES } from './../db/db.constants';
 import { Injectable } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
@@ -7,7 +8,7 @@ import { CreateTodoDTO } from './dto/create-todo.dto'
 
 @Injectable()
 export class TodoService {
-  constructor(@InjectModel('Todo') private readonly model: Model<Todo>) {}
+  constructor(@InjectModel(DB_FEATURES_NAMES.Todo) private readonly model: Model<Todo>) {}
 
   public async add(createTodoDTO: CreateTodoDTO): Promise<Todo> {
     const newTodo = await new this.model(createTodoDTO)

@@ -19,7 +19,9 @@ export const Hello = (): JSX.Element => {
     <>
       <span>{message}</span>
       <br />
-      <Link to={'/todos'}>Todos</Link>
+      <Link to={'/todos'}>Todos</Link><br/>
+      <Link to={'/login'}>Login</Link><br/>
+      <Link to={'/register'}>Registration</Link><br/>
     </>
   )
 }
