@@ -1,30 +1,37 @@
-import {AppDispatch, AppThunk} from '../app.store';
-import {TodoService} from './todo.service';
-import todosSlice from './todos.slice';
-import {CreateTodoDTO, Todo} from './todo.model';
+import { AppDispatch, AppThunk } from '../app.store'
+import { todosSlice } from './todos.slice'
+import { CreateTodoDTO, Todo } from './todo.model'
+import { todoService } from './todo.service'
 
-const getCreateTodoDTO = ({title, author, date, isDone}: Todo): CreateTodoDTO => ({title, author, date, isDone});
+const getCreateTodoDTO = ({ title, author, date, isDone }: Todo): CreateTodoDTO => ({
+  title,
+  author,
+  date,
+  isDone,
+})
+
+const { todoAdded, todosRecived, todoUpdated, todoDeleted } = todosSlice.actions
 
 export const fetchTodos = (): AppThunk => async (dispatch: AppDispatch) => {
-    const {data} = await TodoService.GetAll();
+  const { data } = await todoService.getAll()
 
-    dispatch(todosSlice.actions.todosRecived(data))
-};
+  dispatch(todosRecived(data))
+}
 
 export const addTodo = (newTodo: CreateTodoDTO): AppThunk => async (dispatch: AppDispatch) => {
-    const {data} = await TodoService.Add(newTodo);
+  const { data } = await todoService.add(newTodo)
 
-    dispatch(todosSlice.actions.todoAdded(data.todo));
-};
+  dispatch(todoAdded(data.todo))
+}
 
 export const updateTodo = (todo: Todo): AppThunk => async (dispatch: AppDispatch) => {
-    const {data} = await TodoService.Update(todo._id, getCreateTodoDTO(todo));
+  const { data } = await todoService.update(todo._id, getCreateTodoDTO(todo))
 
-    dispatch(todosSlice.actions.todoUpdated(data.todo));
-};
+  dispatch(todoUpdated(data.todo))
+}
 
 export const deleteTodo = (todo: Todo): AppThunk => async (dispatch: AppDispatch) => {
-    const {data} = await TodoService.Delete(todo._id);
+  const { data } = await todoService.delete(todo._id)
 
-    dispatch(todosSlice.actions.todoDeleted(data.todo));
-};
+  dispatch(todoDeleted(data.todo))
+}

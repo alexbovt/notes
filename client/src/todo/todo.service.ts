@@ -1,29 +1,44 @@
-import axios, {AxiosResponse} from 'axios'
+import { AxiosResponse } from 'axios'
 
-import {CreateTodoDTO} from '../../../api/src/todo/dto/create-todo.dto';
-import {Todo} from "./todo.model";
+import { Todo, CreateTodoDTO } from './todo.model'
+import { BaseService } from '../shared/base.service'
 
 type TodoResponse = {
-    message: string,
-    todo: Todo
+  message: string
+  todo: Todo
 }
 
-export class TodoService {
-    private static readonly baseUrl = 'http://localhost:4200/todo/';
+class TodoService extends BaseService {
+  protected controller: string = 'todo'
 
-    public static Add(createTodoDTO: CreateTodoDTO): Promise<AxiosResponse<TodoResponse>> {
-        return axios.post(this.baseUrl + 'create', createTodoDTO);
-    }
+  public add(createTodoDTO: CreateTodoDTO): Promise<AxiosResponse<TodoResponse>> {
+    return this.invoke<TodoResponse>({
+      method: 'post',
+      url: 'create',
+      data: createTodoDTO,
+    })
+  }
 
-    public static GetAll(): Promise<AxiosResponse<Todo[]>> {
-        return axios.get(this.baseUrl + 'getAll');
-    }
+  public getAll(): Promise<AxiosResponse<Todo[]>> {
+    return this.invoke<Todo[]>({
+      url: 'getAll',
+    })
+  }
 
-    public static Delete(id: string): Promise<AxiosResponse<TodoResponse>> {
-        return axios.delete(`${this.baseUrl}delete?todoId=${id}`);
-    }
+  public delete(id: string): Promise<AxiosResponse<TodoResponse>> {
+    return this.invoke<TodoResponse>({
+      method: 'delete',
+      url: `delete?todoId=${id}`,
+    })
+  }
 
-    public static Update(id: string, newTodo: CreateTodoDTO): Promise<AxiosResponse<TodoResponse>> {
-        return axios.put(`${this.baseUrl}edit?todoId=${id}`, newTodo);
-    }
+  public update(id: string, newTodo: CreateTodoDTO): Promise<AxiosResponse<TodoResponse>> {
+    return this.invoke<TodoResponse>({
+      url: `edit?todoId=${id}`,
+      method: 'put',
+      data: newTodo,
+    })
+  }
 }
+
+export const todoService = new TodoService()

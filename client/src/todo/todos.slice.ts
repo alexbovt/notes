@@ -10,7 +10,7 @@ const initialState: TodoState = {
     todos: []
 };
 
-const todosSlice = createSlice({
+export const todosSlice = createSlice({
     name: 'todo',
     initialState,
     reducers: {
@@ -31,5 +31,3 @@ const todosSlice = createSlice({
         }
     }
 });
-
-export default todosSlice;

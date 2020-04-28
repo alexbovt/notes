@@ -3,6 +3,9 @@ import axios from 'axios'
 import { makeStyles, createStyles, Theme } from '@material-ui/core'
 
 import { useForm } from '../shared/hooks/form.hook'
+import { register } from './auth.actions'
+import { useDispatch, useSelector } from 'react-redux'
+import { ApplicationState } from '../app.reducer'
 
 const useStyles = makeStyles((theme: Theme) => createStyles({}))
 
@@ -14,7 +17,7 @@ type State = {
   passwordConfirmation: string
 }
 
-type CreateUserDTO = {
+export type CreateUserDTO = {
   login: string
   email: string
   password: string
@@ -30,31 +33,39 @@ export const Registration = (): JSX.Element => {
     passwordConfirmation: '',
   })
 
+  const dispatch = useDispatch()
+  const user = useSelector<ApplicationState>((state) => state.auth.user)
+
   const handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
     const { id, value } = event.target
 
     setValue(id as keyof State, value)
   }
 
+  const validate = (): boolean => {
+    const { login, email, password, passwordConfirmation, name } = fields
+
+    const isPasswordsEquals = password === passwordConfirmation
+    const isAllNotEmpty = [login, email, password, passwordConfirmation, name].every((x) => x !== '')
+
+    if (isPasswordsEquals && isAllNotEmpty) return true
+
+    return false
+  }
+
   const handleSubmit = async (): Promise<void | undefined> => {
     const { login, email, password, passwordConfirmation, name } = fields
 
-    //#todo add validation
-    if (
-      [login, email, password, passwordConfirmation].some((x) => x === '') ||
-      password !== passwordConfirmation
-    ) {
-      return
-    }
+    if (!validate()) return
 
-    const { data } = await axios.post('http://localhost:4200/auth/register', {
+    const createUserDTO: CreateUserDTO = {
       email,
       login,
       password,
       name,
-    } as CreateUserDTO)
+    }
 
-    console.log(data)
+    dispatch(register(createUserDTO))
   }
 
   return (
@@ -72,6 +83,8 @@ export const Registration = (): JSX.Element => {
       />
       <br />
       <button onClick={handleSubmit}>Sign up</button>
+      <hr />
+      {user && JSON.stringify(user, undefined, 2)}
     </>
   )
 }
