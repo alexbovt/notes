@@ -1,11 +1,10 @@
 import React, { ChangeEvent } from 'react'
-import axios from 'axios'
 import { makeStyles, createStyles, Theme } from '@material-ui/core'
 
-import { useForm } from '../shared/hooks/form.hook'
+import { useForm } from '../../shared/hooks/form.hook'
 import { register } from './auth.actions'
 import { useDispatch, useSelector } from 'react-redux'
-import { ApplicationState } from '../app.reducer'
+import { ApplicationState } from '../../app/app.reducer'
 
 const useStyles = makeStyles((theme: Theme) => createStyles({}))
 
@@ -48,13 +47,11 @@ export const Registration = (): JSX.Element => {
     const isPasswordsEquals = password === passwordConfirmation
     const isAllNotEmpty = [login, email, password, passwordConfirmation, name].every((x) => x !== '')
 
-    if (isPasswordsEquals && isAllNotEmpty) return true
-
-    return false
+    return isPasswordsEquals && isAllNotEmpty;
   }
 
   const handleSubmit = async (): Promise<void | undefined> => {
-    const { login, email, password, passwordConfirmation, name } = fields
+    const { login, email, password, name } = fields
 
     if (!validate()) return
 

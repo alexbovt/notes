@@ -2,7 +2,7 @@ import React, { ChangeEvent } from 'react'
 import { makeStyles, createStyles, Theme } from '@material-ui/core'
 import axios from 'axios'
 
-import { useForm } from '../shared/hooks/form.hook'
+import { useForm } from '../../shared/hooks/form.hook'
 
 const useStyles = makeStyles((theme: Theme) => createStyles({}))
 

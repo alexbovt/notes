@@ -1,7 +1,7 @@
 import { AxiosResponse } from 'axios'
 
 import { Todo, CreateTodoDTO } from './todo.model'
-import { BaseService } from '../shared/base.service'
+import { BaseService } from '../../shared/base.service'
 
 type TodoResponse = {
   message: string

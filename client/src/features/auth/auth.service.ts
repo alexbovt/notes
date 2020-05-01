@@ -1,5 +1,5 @@
 import { LoginUserDTO } from './login.component'
-import { BaseService } from '../shared/base.service'
+import { BaseService } from '../../shared/base.service'
 import { AxiosResponse } from 'axios'
 import { CreateUserDTO } from './registration.component'
 import { User } from './auth.slice'

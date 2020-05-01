@@ -1,10 +1,10 @@
-import React, { useEffect, SyntheticEvent, useState, ChangeEvent } from 'react'
+import React, { useEffect, useState, ChangeEvent } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
 import { CreateTodoDTO, Todo } from './todo.model'
 import { addTodo, deleteTodo, fetchTodos, updateTodo } from './todo.actions'
-import { ApplicationState } from '../app.reducer'
+import { ApplicationState } from '../../app/app.reducer'
 
 export const Todos = (): JSX.Element => {
   const todos = useSelector<ApplicationState>((state) => state.todo.todos)
