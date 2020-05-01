@@ -1,50 +1,69 @@
-import React, { ChangeEvent } from 'react'
-import { makeStyles, createStyles, Theme } from '@material-ui/core'
-import axios from 'axios'
+import React, {useEffect} from 'react'
+import {makeStyles, createStyles, Theme, TextField, Button, Link, FormControl} from '@material-ui/core'
+import {useForm, Controller} from "react-hook-form";
+import {Link as RouterLink} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
 
-import { useForm } from '../../shared/hooks/form.hook'
+import {appSelector} from "../../shared/selectors/app.selectors";
+import { progressStared, progressEnded } from '../../app/app.slice';
 
 const useStyles = makeStyles((theme: Theme) => createStyles({}))
 
-type State = {
-  login: string
-  password: string
-}
-
-export type LoginUserDTO = {
-  login: string
-  password: string
+type FormState = {
+    login: string
+    password: string
 }
 
 export const Login = (): JSX.Element => {
-  const { fields, setValue } = useForm<State>({ login: '', password: '' })
+    const {handleSubmit, control, errors} = useForm<FormState>({
+        reValidateMode: 'onBlur'
+    })
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
-    const { id, value } = event.target
-
-    setValue(id as keyof State, value)
-  }
-
-  const handleSubmit = async (): Promise<void | undefined> => {
-    const { login, password } = fields
-
-    if ([login, password].every((x) => x !== '')) {
-      const { data } = await axios.post('http://localhost:4200/auth/login', {
-        login,
-        password,
-      } as LoginUserDTO)
-
-      console.log(data)
+    const onSubmit = async (data: FormState): Promise<void> => {
+        console.log(data)
     }
-  }
 
-  return (
-    <>
-      <input type="text" id="login" value={fields.login} onChange={handleChange} />
-      <br />
-      <input type="password" id="password" value={fields.password} onChange={handleChange} />
-      <br />
-      <button onClick={handleSubmit}>Sign in</button>
-    </>
-  )
+    const appTitle = useSelector(appSelector.title)
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        dispatch(progressStared())
+
+        setTimeout(() => {
+            dispatch(progressEnded())
+        }, 2000)
+    }, [])
+
+    return (
+        <FormControl>
+            <Controller
+                as={TextField}
+                name={'login'}
+                control={control}
+                rules={{required: true}}
+                defaultValue={''}
+                label={'Login'}
+                type={'text'}
+                error={!!errors.login}
+                helperText={!!errors.login && 'Login is required'}
+            />
+            <Controller
+                as={TextField}
+                name={'password'}
+                control={control}
+                rules={{required: true}}
+                defaultValue={''}
+                label={'Password'}
+                type={'password'}
+                error={!!errors.password}
+                helperText={!!errors.password && 'Password is required'}
+            />
+            <Button variant="contained" color="primary" onClick={handleSubmit(onSubmit)}>
+                Sign in
+            </Button>
+            <Link component={RouterLink} to="/register">
+                Don't have an account ? Sign up !
+            </Link>
+        </FormControl>
+    )
 }

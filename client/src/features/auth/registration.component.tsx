@@ -1,87 +1,106 @@
-import React, { ChangeEvent } from 'react'
-import { makeStyles, createStyles, Theme } from '@material-ui/core'
-
-import { useForm } from '../../shared/hooks/form.hook'
-import { register } from './auth.actions'
-import { useDispatch, useSelector } from 'react-redux'
-import { ApplicationState } from '../../app/app.reducer'
+import React from 'react'
+import {makeStyles, createStyles, Theme, TextField, Button, Link, FormControl} from '@material-ui/core'
+import {useDispatch, useSelector} from 'react-redux'
+import {ApplicationState} from '../../app/app.reducer'
+import {Controller, useForm} from "react-hook-form";
+import {Link as RouterLink} from "react-router-dom";
 
 const useStyles = makeStyles((theme: Theme) => createStyles({}))
 
-type State = {
-  login: string
-  email: string
-  name: string
-  password: string
-  passwordConfirmation: string
+type FormState = {
+    login: string
+    email: string
+    name: string
+    password: string
+    passwordConfirmation: string
 }
 
 export type CreateUserDTO = {
-  login: string
-  email: string
-  password: string
-  name: string
+    login: string
+    email: string
+    password: string
+    name: string
 }
 
 export const Registration = (): JSX.Element => {
-  const { fields, setValue } = useForm<State>({
-    login: '',
-    name: '',
-    email: '',
-    password: '',
-    passwordConfirmation: '',
-  })
+    const {handleSubmit, control, errors, getValues} = useForm<FormState>({reValidateMode: 'onBlur'})
 
-  const dispatch = useDispatch()
-  const user = useSelector<ApplicationState>((state) => state.auth.user)
+    const dispatch = useDispatch()
+    const user = useSelector<ApplicationState>((state) => state.auth.user)
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
-    const { id, value } = event.target
-
-    setValue(id as keyof State, value)
-  }
-
-  const validate = (): boolean => {
-    const { login, email, password, passwordConfirmation, name } = fields
-
-    const isPasswordsEquals = password === passwordConfirmation
-    const isAllNotEmpty = [login, email, password, passwordConfirmation, name].every((x) => x !== '')
-
-    return isPasswordsEquals && isAllNotEmpty;
-  }
-
-  const handleSubmit = async (): Promise<void | undefined> => {
-    const { login, email, password, name } = fields
-
-    if (!validate()) return
-
-    const createUserDTO: CreateUserDTO = {
-      email,
-      login,
-      password,
-      name,
+    const onSubmit = async (data: FormState): Promise<void | undefined> => {
+        console.log(data)
     }
 
-    dispatch(register(createUserDTO))
-  }
+    const isPasswordConfirmationValid = (passwordConfirmation: string): boolean => passwordConfirmation === getValues('password')
 
-  return (
-    <>
-      Login <input type="text" id="login" value={fields.login} onChange={handleChange} /> <br />
-      Name <input type="text" id="name" value={fields.name} onChange={handleChange} /> <br />
-      Email <input type="email" id="email" value={fields.email} onChange={handleChange} /> <br />
-      Password <input type="password" id="password" value={fields.password} onChange={handleChange} /> <br />
-      Password Confiramtion
-      <input
-        type="password"
-        id="passwordConfirmation"
-        value={fields.passwordConfirmation}
-        onChange={handleChange}
-      />
-      <br />
-      <button onClick={handleSubmit}>Sign up</button>
-      <hr />
-      {user && JSON.stringify(user, undefined, 2)}
-    </>
-  )
+    return (
+        <FormControl>
+            <Controller
+                as={TextField}
+                name={'login'}
+                control={control}
+                rules={{required: true}}
+                defaultValue={''}
+                label={'Login'}
+                type={'text'}
+                error={!!errors.login}
+                helperText={!!errors.login && 'Login is required'}
+            />
+            <Controller
+                as={TextField}
+                name={'email'}
+                control={control}
+                rules={{required: true}}
+                defaultValue={''}
+                label={'Email'}
+                type={'email'}
+                error={!!errors.email}
+                helperText={!!errors.email && 'Email is required'}
+            />
+            <Controller
+                as={TextField}
+                name={'name'}
+                control={control}
+                rules={{required: true}}
+                defaultValue={''}
+                label={'Name'}
+                type={'text'}
+                error={!!errors.name}
+                helperText={!!errors.name && 'Name is required'}
+            />
+            <Controller
+                as={TextField}
+                name={'password'}
+                control={control}
+                rules={{required: true}}
+                defaultValue={''}
+                label={'Password'}
+                type={'password'}
+                error={!!errors.password}
+                helperText={!!errors.password && 'Passowrd is required'}
+            />
+            <Controller
+                as={TextField}
+                name={'passwordConfirmation'}
+                control={control}
+                rules={{
+                    validate: {
+                        passwordConfirmationRequired: isPasswordConfirmationValid
+                    }
+                }}
+                defaultValue={''}
+                label={'Password confirmation'}
+                type={'password'}
+                error={!!errors.passwordConfirmation}
+                helperText={!!errors.passwordConfirmation && 'Passwords must be equal'}
+            />
+            <Button variant="contained" color="primary" onClick={handleSubmit(onSubmit)}>
+                Sign up
+            </Button>
+            <Link component={RouterLink} to="/login">
+                Already have an account ? Sign in !
+            </Link>
+        </FormControl>
+    )
 }
