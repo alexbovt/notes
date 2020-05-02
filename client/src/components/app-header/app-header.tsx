@@ -8,6 +8,7 @@ import IconButton from '@material-ui/core/IconButton';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import MenuIcon from '@material-ui/icons/Menu';
 import {useSelector} from "react-redux";
+import {Link} from 'react-router-dom'
 
 import {authSelector} from "../../shared/selectors/auth.selectors";
 import {appSelector} from "../../shared/selectors/app.selectors";
@@ -27,15 +28,16 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export const AppHeader = (): JSX.Element => {
-
     const isAuthenticated = useSelector(authSelector.isAuthenticated)
     const isLoading = useSelector(appSelector.isLoading)
 
     return (
-        <AppBar position="fixed">
-            {isAuthenticated ? <AuthorizedToolbar/> : <AnonymousToolbar/>}
-            {isLoading && <LinearProgress color={'secondary'}/>}
-        </AppBar>
+        <>
+            <AppBar position="fixed">
+                {isAuthenticated ? <AuthorizedToolbar/> : <AnonymousToolbar/>}
+                {isLoading && <LinearProgress color={'secondary'}/>}
+            </AppBar>
+        </>
     )
 
 }
@@ -58,8 +60,8 @@ const AnonymousToolbar = (): JSX.Element => {
     return (
         <Toolbar>
             <AppTitle/>
-            <Button color="inherit">Login</Button>
-            <Button color="inherit">Register</Button>
+            <Button color="inherit" component={Link} to={'/login'}>Login</Button>
+            <Button color="inherit" component={Link} to={'/register'}>Register</Button>
         </Toolbar>
     )
 }
