@@ -7,11 +7,12 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import MenuIcon from '@material-ui/icons/Menu';
-import {useSelector} from "react-redux";
-import {Link} from 'react-router-dom'
+import {useDispatch, useSelector} from "react-redux";
+import {Link, useLocation} from 'react-router-dom'
 
 import {authSelector} from "../../shared/selectors/auth.selectors";
 import {appSelector} from "../../shared/selectors/app.selectors";
+import {titleSet} from "../../app/app.slice";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -28,8 +29,15 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export const AppHeader = (): JSX.Element => {
+    const location = useLocation()
+    const dispatch = useDispatch()
+
     const isAuthenticated = useSelector(authSelector.isAuthenticated)
     const isLoading = useSelector(appSelector.isLoading)
+
+    useEffect(() => {
+        dispatch(titleSet(location.pathname))
+    }, [location.pathname])
 
     return (
         <>
@@ -69,6 +77,7 @@ const AnonymousToolbar = (): JSX.Element => {
 const AppTitle = (): JSX.Element => {
 
     const classes = useStyles();
+    const name = useSelector(appSelector.name)
     const title = useSelector(appSelector.title)
 
     useEffect(() => {
@@ -77,7 +86,7 @@ const AppTitle = (): JSX.Element => {
 
     return (
         <Typography variant="h6" className={classes.title}>
-            {title}
+            {name}
         </Typography>
     )
 }
