@@ -19,6 +19,18 @@ import {progressStared, progressEnded} from '../../app/app.slice';
 const useStyles = makeStyles((theme: Theme) => createStyles({
     form: {
         marginTop: '5vh'
+    },
+    mb2: {
+        marginBottom: theme.spacing(2)
+    },
+    mt1: {
+        marginTop: theme.spacing(1)
+    },
+    mt2: {
+        marginTop: theme.spacing(2)
+    },
+    mt3: {
+        marginTop: theme.spacing(3)
     }
 }))
 
@@ -51,12 +63,12 @@ export const Login = (): JSX.Element => {
 
     return (
         <Grid item xl={4} lg={4} md={8} sm={10} xs={12} className={classes.form}>
-            <Grid container justify={'center'}>
+            <Grid container justify={'center'} className={classes.mb2}>
                 <Typography component="h1" variant="h5">
                     Sign in
                 </Typography>
             </Grid>
-            <Grid container>
+            <Grid container className={classes.mt2}>
                 <FormControl fullWidth>
                     <Controller
                         as={TextField}
@@ -67,10 +79,11 @@ export const Login = (): JSX.Element => {
                         label={'Login'}
                         type={'text'}
                         error={!!errors.login}
-                        helperText={!!errors.login && 'Login is required'}
+                        helperText={!!errors.login ? 'Login is required' : ' '}
                         margin="normal"
                         variant="outlined"
                         placeholder="Your login"
+                        className={classes.mt1}
                     />
                     <Controller
                         as={TextField}
@@ -81,28 +94,30 @@ export const Login = (): JSX.Element => {
                         label={'Password'}
                         type={'password'}
                         error={!!errors.password}
-                        helperText={!!errors.password && 'Password is required'}
+                        helperText={!!errors.password ? 'Password is required' : ' '}
                         margin="normal"
                         variant="outlined"
                         placeholder="Your passowrd"
+                        className={classes.mt1}
                     />
                     <Button
                         variant="contained"
                         color="primary"
                         fullWidth
                         onClick={handleSubmit(onSubmit)}
+                        className={classes.mt1}
                     >
                         Sign in
                     </Button>
                     <Grid container>
-                        <Grid item lg={6} xs={12}>
+                        <Grid item lg={6} xs={12} className={classes.mt2}>
                             <Link component={RouterLink} to={'/'} variant="body2" underline="none">
-                                Forgot password?
+                                Forgot password ?
                             </Link>
                         </Grid>
-                        <Grid item lg={6} xs={12}>
+                        <Grid item lg={6} xs={12} className={classes.mt2}>
                             <Link component={RouterLink} to={'/register'} variant="body2" underline="none">
-                                Don't have an account? Sign Up
+                                Don't have an account ? Sign Up
                             </Link>
                         </Grid>
                     </Grid>
