@@ -11,19 +11,14 @@ import {
     FormControl,
     Link,
     makeStyles,
-    Avatar,
     Typography
 } from "@material-ui/core";
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 
 import {progressStared, progressEnded} from '../../app/app.slice';
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
-    margin: {
-        margin: 10,
-    },
-    padding: {
-        padding: 5
+    form: {
+        marginTop: '5vh'
     }
 }))
 
@@ -55,60 +50,64 @@ export const Login = (): JSX.Element => {
 
 
     return (
-        <Grid item xl={4} lg={4} md={8} sm={10} xs={12}>
-            <Typography component="h1" variant="h5">
-                Sign in
-            </Typography>
-            <FormControl fullWidth>
-                <Controller
-                    as={TextField}
-                    name={'login'}
-                    control={control}
-                    rules={{required: true}}
-                    defaultValue={''}
-                    label={'Login'}
-                    type={'text'}
-                    error={!!errors.login}
-                    helperText={!!errors.login && 'Login is required'}
-                    margin="normal"
-                    variant="outlined"
-                    placeholder="Your login"
-                />
-                <Controller
-                    as={TextField}
-                    name={'password'}
-                    control={control}
-                    rules={{required: true}}
-                    defaultValue={''}
-                    label={'Password'}
-                    type={'password'}
-                    error={!!errors.password}
-                    helperText={!!errors.password && 'Password is required'}
-                    margin="normal"
-                    variant="outlined"
-                    placeholder="Your passowrd"
-                />
-                <Button
-                    variant="contained"
-                    color="primary"
-                    fullWidth
-                    onClick={handleSubmit(onSubmit)}
-                >
+        <Grid item xl={4} lg={4} md={8} sm={10} xs={12} className={classes.form}>
+            <Grid container justify={'center'}>
+                <Typography component="h1" variant="h5">
                     Sign in
-                </Button>
-                <Grid container>
-                    <Grid item lg={6} xs={12}>
-                        <Link component={RouterLink} to={'/'} variant="body2" underline="none">
-                            Forgot password?
-                        </Link>
+                </Typography>
+            </Grid>
+            <Grid container>
+                <FormControl fullWidth>
+                    <Controller
+                        as={TextField}
+                        name={'login'}
+                        control={control}
+                        rules={{required: true}}
+                        defaultValue={''}
+                        label={'Login'}
+                        type={'text'}
+                        error={!!errors.login}
+                        helperText={!!errors.login && 'Login is required'}
+                        margin="normal"
+                        variant="outlined"
+                        placeholder="Your login"
+                    />
+                    <Controller
+                        as={TextField}
+                        name={'password'}
+                        control={control}
+                        rules={{required: true}}
+                        defaultValue={''}
+                        label={'Password'}
+                        type={'password'}
+                        error={!!errors.password}
+                        helperText={!!errors.password && 'Password is required'}
+                        margin="normal"
+                        variant="outlined"
+                        placeholder="Your passowrd"
+                    />
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        fullWidth
+                        onClick={handleSubmit(onSubmit)}
+                    >
+                        Sign in
+                    </Button>
+                    <Grid container>
+                        <Grid item lg={6} xs={12}>
+                            <Link component={RouterLink} to={'/'} variant="body2" underline="none">
+                                Forgot password?
+                            </Link>
+                        </Grid>
+                        <Grid item lg={6} xs={12}>
+                            <Link component={RouterLink} to={'/register'} variant="body2" underline="none">
+                                Don't have an account? Sign Up
+                            </Link>
+                        </Grid>
                     </Grid>
-                    <Grid item lg={6} xs={12}>
-                        <Link component={RouterLink} to={'/register'} variant="body2" underline="none">
-                            Don't have an account? Sign Up
-                        </Link>
-                    </Grid>
-                </Grid>
-            </FormControl>
+                </FormControl>
+            </Grid>
         </Grid>
     )
 }

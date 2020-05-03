@@ -1,5 +1,5 @@
 import React from 'react'
-import {BrowserRouter as Router, Switch, Route, useLocation} from 'react-router-dom'
+import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
 import CssBaseline from "@material-ui/core/CssBaseline";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import {Theme} from "@material-ui/core";
@@ -12,6 +12,7 @@ import {Login} from '../features/auth/login.component'
 import {Registration} from '../features/auth/registration.component'
 import {NotFound} from '../components/not-found/not-found'
 import {AppHeader} from "../components/app-header/app-header";
+import {PrivateRoute} from "../components/private-route/private-route";
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
@@ -30,9 +31,9 @@ export const Main = (): JSX.Element => {
     const classes = useStyles()
 
     return (
-        <div className={classes.root}>
-            <CssBaseline/>
-            <Router>
+        <Router>
+            <div className={classes.root}>
+                <CssBaseline/>
                 <AppHeader/>
                 <div className={classes.appBarSpacer}/>
                 <Container component={'main'} maxWidth="lg" className={classes.main}>
@@ -40,18 +41,18 @@ export const Main = (): JSX.Element => {
                         <RouterSwitch/>
                     </Grid>
                 </Container>
-            </Router>
-        </div>
+            </div>
+        </Router>
     )
 }
 
 
 const RouterSwitch = (): JSX.Element => (
     <Switch>
-        <Route path="/" exact component={Hello}/>
+        <PrivateRoute path="/" exact component={Hello}/>
         <Route path="/login" component={Login}/>
         <Route path="/register" component={Registration}/>
-        <Route path="/todos" component={Todos}/>
+        <PrivateRoute path="/todos" component={Todos}/>
         <Route component={NotFound}/>
     </Switch>
 )
