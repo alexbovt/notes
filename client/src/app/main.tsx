@@ -13,6 +13,7 @@ import {Registration} from '../features/auth/registration.component'
 import {NotFound} from '../components/not-found/not-found'
 import {AppHeader} from "../components/app-header/app-header";
 import {PrivateRoute} from "../components/private-route/private-route";
+import {AppToast} from "../components/snackbar/snackbar";
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
@@ -33,6 +34,7 @@ export const Main = (): JSX.Element => {
     return (
         <Router>
             <div className={classes.root}>
+                <AppToast />
                 <CssBaseline/>
                 <AppHeader/>
                 <div className={classes.appBarSpacer}/>

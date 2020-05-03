@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React from 'react'
 import {useForm, Controller} from "react-hook-form";
 import {useDispatch} from "react-redux";
 import {Link as RouterLink} from 'react-router-dom'
@@ -14,7 +14,7 @@ import {
     Typography
 } from "@material-ui/core";
 
-import {progressStared, progressEnded} from '../../app/app.slice';
+import {login} from "./auth.actions";
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
     form: {
@@ -40,26 +40,16 @@ type FormState = {
 }
 
 export const Login = (): JSX.Element => {
+    const classes = useStyles()
+    const dispatch = useDispatch()
+
     const {handleSubmit, control, errors} = useForm<FormState>({
         reValidateMode: 'onBlur'
     })
 
-    const classes = useStyles()
-
-    const onSubmit = async (data: FormState): Promise<void> => {
-        console.log(data)
+    const onSubmit = (data: FormState): void => {
+        dispatch(login(data))
     }
-
-    const dispatch = useDispatch()
-
-    useEffect(() => {
-        dispatch(progressStared())
-
-        setTimeout(() => {
-            dispatch(progressEnded())
-        }, 2000)
-    }, [])
-
 
     return (
         <Grid item xl={4} lg={4} md={8} sm={10} xs={12} className={classes.form}>
