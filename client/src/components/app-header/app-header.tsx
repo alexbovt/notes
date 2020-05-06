@@ -16,8 +16,10 @@ import {titleSet} from "../../app/app.slice";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
-        root: {
-            flexGrow: 1,
+        progress: {
+            position: 'absolute',
+            width: "100%",
+            backgroundColor: 'transparent'
         },
         menuButton: {
             marginRight: theme.spacing(2),
@@ -31,6 +33,7 @@ const useStyles = makeStyles((theme: Theme) =>
 export const AppHeader = (): JSX.Element => {
     const location = useLocation()
     const dispatch = useDispatch()
+    const classes = useStyles()
 
     const isAuthenticated = useSelector(authSelector.isAuthenticated)
     const isLoading = useSelector(appSelector.isLoading)
@@ -40,14 +43,11 @@ export const AppHeader = (): JSX.Element => {
     }, [location.pathname])
 
     return (
-        <>
-            <AppBar position="fixed">
-                {isAuthenticated ? <AuthorizedToolbar/> : <AnonymousToolbar/>}
-                {isLoading && <LinearProgress color={'secondary'}/>}
-            </AppBar>
-        </>
+        <AppBar position="fixed">
+            {isLoading && <LinearProgress color={'secondary'} className={classes.progress}/>}
+            {isAuthenticated ? <AuthorizedToolbar/> : <AnonymousToolbar/>}
+        </AppBar>
     )
-
 }
 
 const AuthorizedToolbar = (): JSX.Element => {
