@@ -14,7 +14,7 @@ import {
     Typography
 } from "@material-ui/core";
 
-import {login} from "./auth.actions";
+import {login, test} from "./auth.actions";
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
     form: {
@@ -113,6 +113,10 @@ export const Login = (): JSX.Element => {
                     </Grid>
                 </FormControl>
             </Grid>
+            <br/>
+            <hr/>
+            <button onClick={() => dispatch(test())}>console.log User Data Form nest app
+            </button>
         </Grid>
     )
 }

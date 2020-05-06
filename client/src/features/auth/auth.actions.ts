@@ -24,3 +24,14 @@ export const login = (loginUserDTO: LoginUserDTO): AppThunk => async (dispatch: 
         dispatch(progressEnded())
     }
 }
+
+export const test = (): AppThunk => async (dispatch: AppDispatch) => {
+    try {
+        dispatch(progressStared())
+        const {data} = await authService.test()
+
+        console.log(data)
+    } finally {
+        dispatch(progressEnded())
+    }
+}

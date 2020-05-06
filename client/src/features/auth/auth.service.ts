@@ -16,11 +16,27 @@ export type LoginUserDTO = {
 class AuthService extends BaseService {
     protected controller: string = 'auth'
 
-    public login(loginUserDTO: LoginUserDTO): Promise<AxiosResponse<any>> {
-        return this.invoke<any>({
+    public async login(loginUserDTO: LoginUserDTO): Promise<AxiosResponse<any>> {
+        const {data} = await this.invoke<any>({
             url: 'login',
             method: 'post',
-            data: loginUserDTO,
+            data: {
+                username: loginUserDTO.login,
+                password: loginUserDTO.password
+            },
+        })
+
+        localStorage.setItem('token', data.accessToken)
+
+        return data
+    }
+
+
+    //#Todo revmove
+    public test(): Promise<AxiosResponse<any>> {
+        return this.invoke<any>({
+            url: 'test',
+            method: 'get',
         })
     }
 

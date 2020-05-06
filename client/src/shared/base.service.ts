@@ -1,21 +1,26 @@
-import axios, { AxiosResponse } from 'axios'
+import axios, {AxiosResponse} from 'axios'
 
 type InvokeArgs = {
-  url: string
-  method?: 'get' | 'post' | 'put' | 'delete'
-  data?: unknown
+    url: string
+    method?: 'get' | 'post' | 'put' | 'delete'
+    data?: unknown
 }
 
 export abstract class BaseService {
-  //todo get api url from .env
-  protected readonly apiUrl = 'http://localhost:4200/'
-  protected abstract readonly controller: string
+    //todo get api url from .env
+    protected readonly apiUrl = 'http://localhost:4200/'
+    protected abstract readonly controller: string
 
-  protected invoke<T = unknown>({ method = 'get', url, data }: InvokeArgs): Promise<AxiosResponse<T>> {
-    return axios({
-      url: this.apiUrl + this.controller + '/' + url,
-      method,
-      data,
-    })
-  }
+    protected invoke<T = unknown>({method = 'get', url, data}: InvokeArgs): Promise<AxiosResponse<T>> {
+        const token = localStorage.getItem('token')
+        return axios({
+            url: this.apiUrl + this.controller + '/' + url,
+            method,
+            data,
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        })
+    }
 }

@@ -1,8 +1,12 @@
-import { Document } from 'mongoose'
+import {Document} from 'mongoose'
 
-export interface User extends Document {
-  readonly login: string
-  readonly password: string
-  readonly name: string
-  readonly email: string
+type UserModel = {
+    readonly login: string
+    readonly password: string
+    readonly name: string
+    readonly email: string
 }
+
+export type User = UserModel & Document
+
+export type ClientUser = Omit<UserModel, 'password'> & Pick<User, '_id'>
