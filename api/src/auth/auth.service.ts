@@ -13,11 +13,12 @@ export class AuthService {
     ) {
     }
 
-    public async login(user: ClientUser): Promise<{ accessToken: string } | null> {
+    public async login(user: ClientUser): Promise<{ accessToken: string, user: ClientUser } | null> {
         const token = await this.jwtService.sign(user)
 
         return {
-            accessToken: token
+            accessToken: token,
+            user
         }
     }
 

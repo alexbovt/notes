@@ -34,7 +34,7 @@ export const Main = (): JSX.Element => {
     return (
         <Router>
             <div className={classes.root}>
-                <AppToast />
+                <AppToast/>
                 <CssBaseline/>
                 <AppHeader/>
                 <div className={classes.appBarSpacer}/>

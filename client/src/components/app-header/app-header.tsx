@@ -13,6 +13,7 @@ import {Link, useLocation} from 'react-router-dom'
 import {authSelector} from "../../shared/selectors/auth.selectors";
 import {appSelector} from "../../shared/selectors/app.selectors";
 import {titleSet} from "../../app/app.slice";
+import {logout} from "../../features/auth/auth.actions";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -51,7 +52,9 @@ export const AppHeader = (): JSX.Element => {
 }
 
 const AuthorizedToolbar = (): JSX.Element => {
-    const classes = useStyles();
+    const classes = useStyles()
+    const dispatch = useDispatch()
+    const handleLogout = () => dispatch(logout())
 
     return (
         <Toolbar>
@@ -59,7 +62,7 @@ const AuthorizedToolbar = (): JSX.Element => {
                 <MenuIcon/>
             </IconButton>
             <AppTitle/>
-            <Button color="inherit">Logout</Button>
+            <Button color="inherit" onClick={handleLogout}>Logout</Button>
         </Toolbar>
     )
 }
@@ -76,7 +79,7 @@ const AnonymousToolbar = (): JSX.Element => {
 
 const AppTitle = (): JSX.Element => {
 
-    const classes = useStyles();
+    const classes = useStyles()
     const name = useSelector(appSelector.name)
     const title = useSelector(appSelector.title)
 

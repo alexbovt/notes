@@ -14,7 +14,8 @@ import {
     Typography
 } from "@material-ui/core";
 
-import {login, test} from "./auth.actions";
+import {login} from "./auth.actions";
+import {LoginUserDTO} from "./auth.service";
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
     form: {
@@ -34,10 +35,7 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
     }
 }))
 
-type FormState = {
-    login: string
-    password: string
-}
+type FormState = LoginUserDTO
 
 export const Login = (): JSX.Element => {
     const classes = useStyles()
@@ -62,14 +60,14 @@ export const Login = (): JSX.Element => {
                 <FormControl fullWidth>
                     <Controller
                         as={TextField}
-                        name={'login'}
+                        name={'username'}
                         control={control}
                         rules={{required: true}}
                         defaultValue={''}
                         label={'Login'}
                         type={'text'}
-                        error={!!errors.login}
-                        helperText={!!errors.login ? 'Login is required' : ' '}
+                        error={!!errors.username}
+                        helperText={!!errors.username ? 'Login is required' : ' '}
                         margin="normal"
                         variant="outlined"
                         placeholder="Your login"
@@ -113,10 +111,6 @@ export const Login = (): JSX.Element => {
                     </Grid>
                 </FormControl>
             </Grid>
-            <br/>
-            <hr/>
-            <button onClick={() => dispatch(test())}>console.log User Data Form nest app
-            </button>
         </Grid>
     )
 }
