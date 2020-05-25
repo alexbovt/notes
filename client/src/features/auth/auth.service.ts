@@ -16,10 +16,11 @@ class AuthService extends BaseService {
         })
     }
 
-    public init(): Promise<ServiceResponse> {
+    public init(token: string): Promise<ServiceResponse> {
         return this.invoke({
             url: 'init',
             method: 'post',
+            data: {token}
         })
     }
 }

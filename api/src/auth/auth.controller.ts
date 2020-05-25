@@ -20,15 +20,16 @@ export class AuthController {
 
     @Post('/init')
     public async init(@Body() body: { token: string }): Promise<ServiceResponse> {
-        //todo validate and prolong jwt
-        return new Promise(resolve => {
-            setTimeout(() => {
-                resolve({
-                    accessToken: 'TEST_TOKEN',
-                    user: {login: 'JohnDoe', _id: '1', email: 'Doe', name: 'John'}
-                })
-            }, 2000)
-        })
+        const {token} = body
+
+        if (!token)
+            return Promise.resolve({accessToken: '', user: null})
+
+        const {newToken, user} = await this.authService.prolong(token)
+
+        return {
+            accessToken: newToken, user
+        }
     }
 
     @Post('/register')

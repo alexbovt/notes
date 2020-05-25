@@ -12,7 +12,7 @@ import {Login} from '../features/auth/login.component'
 import {Registration} from '../features/auth/registration.component'
 import {NotFound} from '../components/not-found/not-found'
 import {AppHeader} from "../components/app-header/app-header";
-import {PrivateRoute} from "../components/private-route/private-route";
+import {PrivateRoute, PublicOnlyRoute} from "../components/routes/routes";
 import {AppToast} from "../components/snackbar/snackbar";
 import {Home} from "../features/home/home.component";
 import {useSelector} from "react-redux";
@@ -54,7 +54,7 @@ export const Main = (): JSX.Element => {
     )
 }
 
-const InitialLoader = (): JSX.Element => {
+export const InitialLoader = (): JSX.Element => {
     const classes = useStyles()
 
     return <CircularProgress color={"secondary"} className={classes.initialLoader}/>
@@ -79,8 +79,8 @@ const PageContent = (): JSX.Element => {
 const RouterSwitch = (): JSX.Element => (
     <Switch>
         <PrivateRoute path="/" exact component={Home}/>
-        <Route path="/login" component={Login}/>
-        <Route path="/register" component={Registration}/>
+        <PublicOnlyRoute path="/login" component={Login}/>
+        <PublicOnlyRoute path="/register" component={Registration}/>
         <PrivateRoute path="/todos" component={Todos}/>
         <Route component={NotFound}/>
     </Switch>

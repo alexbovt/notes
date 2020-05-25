@@ -6,7 +6,7 @@ import {authSelector} from "../../shared/selectors/auth.selectors";
 
 export const Home = (): JSX.Element => {
     const isAuthenticated = useSelector(authSelector.isAuthenticated)
-    const urlToRedirect = isAuthenticated ? '' : 'login'
+    const urlToRedirect = isAuthenticated ? 'home' : 'login'
 
     return <Redirect to={urlToRedirect}/>
 }

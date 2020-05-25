@@ -8,7 +8,8 @@ import {showErrorToast} from '../../app/app.actions'
 export const initAuthentication = (): AppThunk => async (dispatch: AppDispatch) => {
     try {
         dispatch(progressStared())
-        const {user} = await authService.init()
+        const token = localStorage.getItem('token') || ''
+        const {user} = await authService.init(token)
 
         if (user) {
             dispatch(loggedIn(user))
