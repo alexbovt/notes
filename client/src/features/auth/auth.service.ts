@@ -15,6 +15,13 @@ class AuthService extends BaseService {
             data: loginUserDTO
         })
     }
+
+    public init(): Promise<ServiceResponse> {
+        return this.invoke({
+            url: 'init',
+            method: 'post',
+        })
+    }
 }
 
 export const authService = new AuthService()

@@ -3,7 +3,9 @@ import {Controller, Post, Body, Res, Request, HttpStatus, UseGuards, Get, Req} f
 import {CreateUserDTO} from './../users/dto/create-user.dto'
 import {AuthService} from './auth.service'
 import {LocalAuthGuard} from "./guards/local-auth.guard";
-import {JwtAuthGuard} from "./guards/jwt-auth.guard";
+import {ClientUser} from "../users/intefaces/user.inteface";
+
+type ServiceResponse = { accessToken: string, user: ClientUser }
 
 @Controller('auth')
 export class AuthController {
@@ -12,14 +14,21 @@ export class AuthController {
 
     @UseGuards(LocalAuthGuard)
     @Post('/login')
-    public async login(@Request() request): Promise<{ accessToken: string }> {
+    public async login(@Request() request): Promise<ServiceResponse> {
         return this.authService.login(request.user)
     }
 
-    @UseGuards(JwtAuthGuard)
-    @Get('/test')
-    public async test(@Request() request) {
-        return request.user;
+    @Post('/init')
+    public async init(@Body() body: { token: string }): Promise<ServiceResponse> {
+        //todo validate and prolong jwt
+        return new Promise(resolve => {
+            setTimeout(() => {
+                resolve({
+                    accessToken: 'TEST_TOKEN',
+                    user: {login: 'JohnDoe', _id: '1', email: 'Doe', name: 'John'}
+                })
+            }, 2000)
+        })
     }
 
     @Post('/register')

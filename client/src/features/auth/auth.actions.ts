@@ -5,6 +5,20 @@ import {loggedOut, loggedIn} from './auth.slice'
 import {progressStared, progressEnded} from '../../app/app.slice'
 import {showErrorToast} from '../../app/app.actions'
 
+export const initAuthentication = (): AppThunk => async (dispatch: AppDispatch) => {
+    try {
+        dispatch(progressStared())
+        const {user} = await authService.init()
+
+        if (user) {
+            dispatch(loggedIn(user))
+        } else {
+            dispatch(loggedOut())
+        }
+    } finally {
+        dispatch(progressEnded())
+    }
+}
 
 export const register = (createUserDTO: CreateUserDTO): AppThunk => async (dispatch: AppDispatch) => {
 

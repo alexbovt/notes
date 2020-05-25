@@ -8,12 +8,12 @@ export type User = {
 }
 
 export type AuthState = {
-    isAuthenticated: boolean
+    isAuthenticated: boolean | null
     user: User | null
 }
 
 const initialState: AuthState = {
-    isAuthenticated: false,
+    isAuthenticated: null,
     user: null,
 }
 
@@ -29,8 +29,8 @@ const authSlice = createSlice({
             state.user = action.payload
         },
         loggedOut: (state: AuthState) => {
-            state.user = initialState.user
-            state.isAuthenticated = initialState.isAuthenticated
+            state.user = null
+            state.isAuthenticated = false
         }
     },
 })
