@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React from 'react'
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
 import CircularProgress from "@material-ui/core/CircularProgress";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -14,15 +14,17 @@ import {NotFound} from '../components/not-found/not-found'
 import {AppHeader} from "../components/app-header/app-header";
 import {PrivateRoute, PublicOnlyRoute} from "../components/routes/routes";
 import {AppToast} from "../components/snackbar/snackbar";
-import {Home} from "../features/home/home.component";
+import {Startup} from "../features/home/startup.component";
 import {useSelector} from "react-redux";
 import {authSelector} from "../shared/selectors/auth.selectors";
 import {appSelector} from "../shared/selectors/app.selectors";
+import {AppDrawer} from "../components/app-drawer/app-drawer";
+import {Home} from "../features/home/home.component";
+
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
         display: 'flex',
-        flexDirection: 'column',
         minHeight: '100vh',
     },
     appBarSpacer: theme.mixins.toolbar,
@@ -62,12 +64,14 @@ export const InitialLoader = (): JSX.Element => {
 
 const PageContent = (): JSX.Element => {
     const classes = useStyles()
+    const isAuthenticated = useSelector(authSelector.isAuthenticated)
 
     return (
         <>
             <AppHeader/>
-            <div className={classes.appBarSpacer}/>
+            {isAuthenticated && <AppDrawer/>}
             <Container component={'main'} maxWidth="lg" className={classes.main}>
+                <div className={classes.appBarSpacer}/>
                 <Grid container justify={'center'} alignItems={'stretch'}>
                     <RouterSwitch/>
                 </Grid>
@@ -78,7 +82,8 @@ const PageContent = (): JSX.Element => {
 
 const RouterSwitch = (): JSX.Element => (
     <Switch>
-        <PrivateRoute path="/" exact component={Home}/>
+        <PrivateRoute path="/" exact component={Startup}/>
+        <PrivateRoute path="/home" exact component={Home}/>
         <PublicOnlyRoute path="/login" component={Login}/>
         <PublicOnlyRoute path="/register" component={Registration}/>
         <PrivateRoute path="/todos" component={Todos}/>
