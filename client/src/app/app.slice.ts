@@ -13,6 +13,7 @@ export type AppState = {
     title: string
     isLoading: boolean
     toast: ToastState
+    isDrawerOpen: boolean
 }
 
 //#TODO get app name from .env
@@ -28,32 +29,39 @@ const initialState: AppState = {
     name: APP_NAME,
     title: APP_NAME,
     isLoading: false,
-    toast: toastInitialState
+    toast: toastInitialState,
+    isDrawerOpen: false
 }
 
 const appSlice = createSlice({
     name: 'app',
     initialState,
     reducers: {
-        titleSet: (state: AppState, action: PayloadAction<string>) => {
+        titleSet: (state, action: PayloadAction<string>) => {
             const routeName = getRouteName(action.payload)
             const tabName = routeName.length > 0 ? SEPARATOR + capitalizeFirst(routeName) : ''
             state.title = APP_NAME + tabName
         },
-        progressStared: (state: AppState) => {
+        progressStared: (state) => {
             state.isLoading = true
         },
-        progressEnded: (state: AppState) => {
+        progressEnded: (state) => {
             state.isLoading = false
         },
-        setToast: (state: AppState, action: PayloadAction<ToastState>) => {
+        setToast: (state, action: PayloadAction<ToastState>) => {
             state.toast = action.payload
         },
-        clearToast: (state: AppState) => {
+        clearToast: state => {
             state.toast = toastInitialState
-        }
+        },
+        openDrawer: state => {
+            state.isDrawerOpen = true
+        },
+        closeDrawer: state => {
+            state.isDrawerOpen = false
+        },
     },
 })
 
 export const {reducer: appReducer} = appSlice
-export const {progressStared, progressEnded, titleSet, setToast,  clearToast} = appSlice.actions
+export const {progressStared, progressEnded, titleSet, setToast, clearToast, closeDrawer, openDrawer} = appSlice.actions

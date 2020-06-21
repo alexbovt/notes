@@ -4,5 +4,6 @@ export const appSelector = {
     name: (state: ApplicationState) => state.app.name,
     title: (state: ApplicationState) => state.app.title,
     isLoading: (state: ApplicationState) => state.app.isLoading,
-    toast: (state: ApplicationState) => state.app.toast
+    toast: (state: ApplicationState) => state.app.toast,
+    isDrawerOpen: (state: ApplicationState) => state.app.isDrawerOpen
 }
